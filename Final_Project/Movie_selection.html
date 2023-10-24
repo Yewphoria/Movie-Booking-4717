@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Seenima</title>
+<link rel="stylesheet" href="style.css">
+<meta charset="utf-8"> 
+<style>
+
+
+.container {
+  display: flex;
+
+}
+
+.col {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+#movie-image {
+    padding:10%;
+  width: 80%;
+  height: auto;
+}
+
+
+
+.btn{
+    background-color: peachpuff; 
+    padding:1%;
+    width: auto;
+    height: auto;
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 15%;
+    cursor: pointer;
+    transition: color 0.4s ;
+    position:relative;
+
+}
+
+.btn:hover{
+    color: peachpuff;
+    background-color: black;
+    
+}
+
+#symbol-icon {
+    width: 5%;
+    height: auto;
+  
+}
+
+
+
+
+</style> 
+</head>
+<body>
+<header>
+    <h1 style="text-align: center;">Heading div</h1>
+</header>
+<h2 style="text-align: center;">Now Showing</h2>
+
+<div class="container">
+    <!-- The Ex-file 4 movie -->
+    <div class="col">
+        <a href="Ex-file-4_details.html">  <!-- Linking to movie deatils when user clicks the image-->
+        <img src="./images/The-Ex-files-4.png" id="movie-image" alt="The-Ex-files-4"></a>
+        <p style="text-align:center">The Ex-file 4: Marriage Plan
+        <br>
+        前任4：英年早婚
+        <br>
+        <img src="./images/Pg-icon.png" id="symbol-icon" alt="PG"> 129 minutes
+        <br>
+        <img src="./images/star-filled.png" id="symbol-icon" alt="star-filled" style="width:4%"> 
+        <img src="./images/star-filled.png" id="symbol-icon" alt="star-filled" style="width:4%"> 
+        <img src="./images/star-filled.png" id="symbol-icon" alt="star-filled" style="width:4%"> 
+        <img src="./images/star-filled.png" id="symbol-icon" alt="star-filled" style="width:4%">
+        <img src="./images/star-halffilled.png" id="symbol-icon" alt="star-halffilled" style="width:4%">
+        <br>
+        <br>
+        <button class="btn" style="text-align: center;" onclick="window.location.href = 'Ex-file-4_details.html';">Book Now</button>
+        </p>
+        
+        
+    </div>
+    <div class="col">
+        <img src="./images/The-Ex-files-4.png" id="movie-image" alt="The-Ex-files-4">
+    </div>
+    <div class="col">
+        <img src="./images/The-Ex-files-4.png" id="movie-image" alt="The-Ex-files-4">
+    </div>
+    
+</div>
+
+
+  <footer>
+    <p style="text-align: center;">Footer div</p>
+  </footer>  
+</div>
+</body>
+</html>
