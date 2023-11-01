@@ -57,18 +57,26 @@ if (isset($_POST['checkoutBtn'])) {
     $query = "SELECT * FROM `availability` WHERE title='$movie' AND date='$date' AND time='$time'";
     $result = $conn->query($query);
     $rowBoxes = resultToArray($result);
-    if (!empty($_POST['seat'])) { //if the seat is selected and submited through the form
-        foreach ($_POST['seat'] as $selected) { //for each selected seat which have value of the seat number which is set into $selected
-            $query = "UPDATE `availability` SET bookingstatus = '1' WHERE title = '$movie' AND date = '$date' AND time = '$time' AND seatcode = '$selected'";
-            $result = $conn->query($query);
-            //need input query order into table also
+    if (!empty($_POST['emailBox']) and !empty($_POST['nameBox'])) { //if the email and name is not empty
+        $email = $_POST['emailBox'];
+        $name = $_POST['nameBox'];
+        $payment = $_POST['payment'];
+        $_SESSION['email'] = $email;
+        $_SESSION['name'] = $name;
+        $_SESSION['payment'] = $payment;
+        include 'send_email.php'; #send email to user
+        if (!empty($_POST['seat'])) { //if the seat is selected and submited through the form
+            foreach ($_POST['seat'] as $selected) { //for each selected seat which have value of the seat number which is set into $selected
+                $query = "UPDATE `availability` SET bookingstatus = '1' WHERE title = '$movie' AND date = '$date' AND time = '$time' AND seatcode = '$selected'";
+                $result = $conn->query($query);
+                //need input query order into table also
+            }
         }
-    }
-    // code to display a confirmation dialog with only the "OK" button
-    echo "<script>alert('Tickets successfully purchased! Please check your email. Thank you for your time');
+        // code to display a confirmation dialog with only the "OK" button
+        echo "<script>alert('Tickets successfully purchased! Please check your email. Thank you for your time');
     window.location.href = 'movie_selection.php';</script>";
 
-
+    }
 }
 
 
@@ -340,7 +348,6 @@ if (isset($_POST['checkoutBtn'])) {
                     echo '<span style="padding-left: 20px;">D</span>';
                     echo '</tr>';
                     ?>
-
                     <br>
                     <p>
                         <input class="empty" type="checkbox" disabled>
@@ -379,6 +386,19 @@ if (isset($_POST['checkoutBtn'])) {
                             </tr>
                         </table>
                         <br>
+                        <?php
+                        if (isset($_SESSION['valid_user'])) {
+                            echo '<h3>Ordered by ' . $_SESSION['valid_user'] . ' </h3>';
+                            echo '<input type="hidden" name="emailBox" value="' . $_SESSION['valid_user'] . '">';
+                            echo '<input type="hidden" name="nameBox" value="customer_login">';
+                        } else {
+                            echo '<fieldset style="border:0px">';
+                            echo '    <label>Email: <input name="emailBox"></label><br><br>';
+                            echo '    <label>Name: <input name="nameBox"></label>';
+                            echo '</fieldset>';
+                        }
+
+                        ?>
                         <p id="payment-header" style="display: none;">Please select payment method:</p>
                         <!-- Not displayed unless user clicks seats -->
                         <div id="payment-options" style="display: none;">
