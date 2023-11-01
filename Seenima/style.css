@@ -1,0 +1,195 @@
+/* Reset some default styles and apply a background color */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #000000;
+  color: #fff;
+}
+
+/* Style the header and navigation bar */
+header {
+  background-color: #000000;
+  color: #fff;
+  padding: 10px 0;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Center the logo within the navbar */
+.center {
+  display: flex;
+  justify-content: center;
+  margin-right: 200px;
+}
+
+.navbar-logo img {
+  max-width: 100px; /* Adjust the size of your logo */
+}
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+nav li {
+  margin-right: 20px;
+}
+
+nav a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+}
+
+/* Your existing CSS styles */
+
+/* Style for the image carousel */
+.image-carousel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  max-width: 1280px; /* Adjust the width as needed */
+  padding: 0 10px; /* Add some padding to the sides */
+  box-sizing: border-box; /* Include padding in the width */
+}
+
+.carousel-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  text-align: center;
+  width: 100%; /* Ensure the container takes the full width */
+  overflow: hidden;
+  max-width: 100%; /* Ensure the container's max width is the full width */
+}
+
+.carousel-slide {
+  flex: 0 0 100%;
+  display: none;
+  text-align: center; /* Center the image */
+}
+
+.carousel-slide img {
+  display: block;
+  max-width: 100%; /* Ensure the image fits within the container */
+  height: auto;
+  margin: 0 auto; /* Center the image horizontally */
+}
+
+/* Style for the previous and next buttons */
+.carousel-button {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  font-size: 24px;
+  background: rgba(255, 255, 255, 0.5);
+  padding: 5px 15px;
+  border: none;
+  border-radius: 5px;
+  z-index: 1; /* Ensure the buttons are above the images */
+}
+
+#carousel-prev {
+  left: 10px; /* Adjust the distance from the left */
+  transform: translateY(-50%);
+}
+
+#carousel-next {
+  right: 10px; /* Adjust the distance from the right */
+  transform: translateY(-50%);
+}
+/* Style your tabs and content areas */
+
+
+.tab-button.active {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.tab-content {
+  padding: 20px;
+  color: #ffffff;
+}
+
+.tab-content h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.movie-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  /* Define styles for movie items */
+}
+
+
+
+
+/* Main Container so that it will split many columns and more */
+.container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* image column for the movie poster */ */
+.col-image {
+  flex: 1;
+  /* padding-left: 6%; */
+  max-width: 40%;
+  padding-top: 1%;
+}
+
+
+
+
+/* .col {
+  flex: 1;
+  padding: 8px; 
+  border: 1px solid #ccc;
+} */
+
+#seating-plan{
+  text-align: center;
+}
+
+#seating-plan table{
+  margin:0 auto;
+  width: 100;
+  text-align: center;
+}
+
+#seating-plan table table{
+  margin:0 auto;
+  width: 80%;
+
+}
+
+#seating-plan table table td{
+  max-width: 10px;
+
+}
+
+
+
+.empty{
+background-color: red;
+height: 12px;
+width:15px;
+margin: 3px;
+border-top-left-radius: 10px;
+border-top-right-radius: 10px;
+}
