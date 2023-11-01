@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Ex-file-4</title>
+<link rel="stylesheet" href="style.css">
+<meta charset="utf-8"> 
+<style>
+
+
+p{
+  font-size: 15px;
+
+}
+
+.container-movie-detail {
+  display: flex;
+  border: 1px solid #ccc;
+  margin:0 auto;
+}
+
+
+
+#movie-image {
+    padding:10%;
+  max-width: 90%;
+  height: auto;
+}
+
+#symbol-icon {
+    padding-top: 1%;
+    width: 5%;
+    height: auto;
+
+}
+
+.btn{
+    background-color: peachpuff; 
+    padding:1%;
+    width: auto;
+    height: auto;
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 15%;
+    cursor: pointer;
+    transition: color 0.4s ;
+    position:relative;
+
+}
+
+.btn:hover{
+    color: peachpuff;
+    background-color: black;
+    
+}
+
+#symbol-icon {
+    width: 2%;
+    height: auto;
+  
+}
+
+.col-image {
+  flex: 1;
+  padding-left: 6%;
+  max-width:40%;
+  padding-top: 1%;
+}
+
+#movie-image {
+  width: 80%;
+  height: auto;
+  margin: 0;
+  padding:0;
+}
+
+.subtitle{
+  color:grey;
+}
+
+.col-right{
+    flex: 1;
+    padding: 10px;
+    padding-top:6.5%;
+    
+    /* border: 1px solid #ccc; */
+}
+
+
+  .col{
+    flex: 1;
+/*     
+    border: 1px solid #ccc; */
+  }
+
+  .cinema-container{
+    display: flex;
+    /* border: 1px solid #ccc; */
+    
+  }
+
+li ,a{
+  list-style-type: none;
+  padding: 5px;
+  text-decoration: none;
+}
+
+#showtimes-content {
+  display: flex; /* Change the display property to flex */
+    flex-wrap: wrap; /* Allow flex items to wrap onto multiple lines if needed */
+  
+  margin:0;
+}
+
+.showtime-box {
+    border: 1px solid #333;
+    margin: 0 10px 10px 0;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+    background-color: peachpuff;
+    max-width: 20%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.showtime-box:hover {
+  color: peachpuff;
+    background-color: black;
+}
+
+
+</style> 
+</head>
+<body>
+<header>
+    <h1 style="text-align: center;">Heading div</h1>
+</header>
+<div>
+<h2 style="text-align: left; padding-left: 5%;"> <strong>The Ex-Files 4: Marriage plan 前任4：英年早婚</strong>
+
+<img src="./images/Pg-icon.png" id="symbol-icon" alt="PG"> 
+
+</h2>
+<hr class="solid" style="max-width: 90%;">
+</div>
+<div class="container-movie-detail">
+  <div class="col-image">
+<img src="./images/The-Ex-files-4.png" id="movie-image" alt="Ex-file-4">
+  </div>
+  <div class="col" >  <!--Main right column container-->
+    <div class="container">
+      <div class="col">
+        <h3><strong>Details</strong></h3>
+        <p>
+          <span class="subtitle">Cast:</span>
+          <span style="padding-left: 11.5%;"> Han Geng 韩庚, Zheng Kai 郑恺</span>  <!-- will change this to database output if possible-->
+        </p>
+        <p>
+          <span class="subtitle">Director:</span>
+          <span style="padding-left: 5%;">Tian Yusheng 田羽生</span>  <!-- will change this to database output if possible-->
+        </p>
+        <p>
+          <span class="subtitle">Genre:</span>
+          <span style="padding-left: 9%;">Comedy/ Romance</span>  <!-- will change this to database output if possible-->
+        </p>
+      </div>
+      <div class="col-right"> 
+        <p>
+          <span class="subtitle">Release:</span>
+          <span style="padding-left: 15%;">05-10-2023</span>  <!-- will change this to database output if possible-->
+        </p>
+        <p>
+          <span class="subtitle">Running Time:</span>
+          <span style="padding-left:4.5%">129 minutes</span>  <!-- will change this to database output if possible-->
+        </p>
+        <p>
+          <span class="subtitle">Language:</span>
+          <span style="padding-left: 12%;">
+            Mandarin(Sub: English, Chinese)</span>  <!-- will change this to database output if possible-->
+        </p>
+      </div> 
+    </div>
+  
+      <h3 style="padding-left: 1.5%;"><Strong>Synopsis</Strong></h3>
+      <p style="padding-left:1.5%; text-align: justify;">The immensely popular EX-FILE franchise now comes to its fourth sequel in which we see buddies Meng Yun and Yu Fei coming to an age to talk about marriage.
+        In order to avoid problems after marriage, Yu and his girlfriend Ding Dian create a marriage cooling-off period to preview life after marriage in advance. The ups and downs of marriage indeed become challenging tests for the relationship between them.
+        
+        Changes in friends around and pressure from parents are getting to make Meng think about marriage. With the question “why do people get married”, he starts a blind date journey, allowing him to learn various concepts of marriage and love from his different blind dates, which makes him even more confused and struggling.
+        
+        At an unexpected alumni gathering, Meng reunites with his first love. After many years, his heart is still pounding at the sight of her. He seems to finally catch a glimmer of hope, but would this girl really be the chosen one?<!-- will change this to database output if possible-->
+      </p>
+      <br>
+      <video width="100%" height="auto" controls poster="./images/Ex-file-4-thumbnail.png">
+        <source src="./videos/Ex-files-4-video.mp4" type="video/mp4">
+       </video>
+  </div>
+</div>
+
+  <h2 style="padding-left: 6%;">Buy Tickets</h2>
+  <div class="cinema-container">
+    <div class="col" style="max-width: 30%;">
+  <h3 style="padding-left: 20%;">Select a Cinema</h3>
+
+  <ul style="padding-left:17%;">
+      <li><a href="#" onclick="showShowtimes('Suntec City', event)">Suntec City</a></li>
+      <li><a href="#" onclick="showShowtimes('Jurong Point', event)">Jurong Point</a></li>
+      <li><a href="#" onclick="showShowtimes('Bugis +', event)">Bugis +</a></li>
+  </ul>
+</div>
+  <div class="col">
+    <div class="showtimes">
+      <h3>Showtimes</h3>  
+      <div id="showtimes-content"></div>
+    </div>
+</div>
+</div>
+
+
+<script src="script-showtime.js"></script>
+  <footer>
+    <p style="text-align: center;">Footer div</p>
+  </footer>  
+</div>
+</body>
+</html>
