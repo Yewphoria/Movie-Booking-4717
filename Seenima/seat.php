@@ -57,18 +57,27 @@ if (isset($_POST['checkoutBtn'])) {
     $query = "SELECT * FROM `availability` WHERE title='$movie' AND date='$date' AND time='$time'";
     $result = $conn->query($query);
     $rowBoxes = resultToArray($result);
-    if (!empty($_POST['seat'])) { //if the seat is selected and submited through the form
-        foreach ($_POST['seat'] as $selected) { //for each selected seat which have value of the seat number which is set into $selected
-            $query = "UPDATE `availability` SET bookingstatus = '1' WHERE title = '$movie' AND date = '$date' AND time = '$time' AND seatcode = '$selected'";
-            $result = $conn->query($query);
-            //need input query order into table also
+    if (!empty($_POST['emailBox']) and !empty($_POST['nameBox'])) { //if the email and name is not empty
+        $email = $_POST['emailBox'];
+        $name = $_POST['nameBox'];
+        $payment = $_POST['payment'];
+        $_SESSION['email'] = $email;
+        $_SESSION['name'] = $name;
+        $_SESSION['payment'] = $payment;
+        include 'send_email.php'; #send email to user
+        if (!empty($_POST['seat'])) { //if the seat is selected and submited through the form
+            foreach ($_POST['seat'] as $selected) { //for each selected seat which have value of the seat number which is set into $selected
+                $querySeat = "UPDATE `availability` SET bookingstatus = '1' WHERE title = '$movie' AND date = '$date' AND time = '$time' AND seatcode = '$selected'";
+                $result = $conn->query($querySeat);
+                $queryOrder = "INSERT INTO `orders` (title, email,seat,date,time,customerName, payment) VALUES ('$movie', '$email', '$selected', '$date', '$time', '$name', '$payment')";
+                $result = $conn->query($queryOrder);
+            }
         }
-    }
-    // code to display a confirmation dialog with only the "OK" button
-    echo "<script>alert('Tickets successfully purchased! Please check your email. Thank you for your time');
+        // code to display a confirmation dialog with only the "OK" button
+        echo "<script>alert('Tickets successfully purchased! Please check your email. Thank you for your time');
     window.location.href = 'movie_selection.php';</script>";
 
-
+    }
 }
 
 
@@ -221,6 +230,23 @@ if (isset($_POST['checkoutBtn'])) {
         cursor: pointer;
         margin: 12px 50px 2px 20px;
     }
+
+    /* email error message */
+    .errormessage {
+        padding-top: 5px;
+        padding-right: 35px;
+        color: red;
+        font-size: 10px;
+    }
+
+    .checkout-btn.custom-button[disabled] {
+        background-color: #999;
+        /* Change this to your desired color */
+        color: #ccc;
+        /* Change this to your desired text color */
+        cursor: not-allowed;
+        /* Change cursor style */
+    }
 </style>
 
 <body>
@@ -265,7 +291,8 @@ if (isset($_POST['checkoutBtn'])) {
             <img src="./images/<?php echo $movie_picture; ?>" id="movie-image" style="width:90%;">
         </div>
         <div class="seating-container">
-            <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post"> <!-- Refresh the page itself -->
+            <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" id="checkout-form">
+                <!-- Refresh the page itself -->
                 <td id="seating-plan">
 
                     <?php
@@ -340,7 +367,6 @@ if (isset($_POST['checkoutBtn'])) {
                     echo '<span style="padding-left: 20px;">D</span>';
                     echo '</tr>';
                     ?>
-
                     <br>
                     <p>
                         <input class="empty" type="checkbox" disabled>
@@ -379,6 +405,24 @@ if (isset($_POST['checkoutBtn'])) {
                             </tr>
                         </table>
                         <br>
+                        <div id="customer-info" style="display:none;">
+                            <?php
+                            if (isset($_SESSION['valid_user'])) {
+                                echo '<h3>Ordered by ' . $_SESSION['valid_user'] . ' </h3>';
+                                echo '<input type="hidden" name="emailBox" value="' . $_SESSION['valid_user'] . '">';
+                                echo '<input type="hidden" name="nameBox" value="customer_login">';
+                            } else {
+                                echo '<fieldset style="border:0px">';
+                                echo '<label>Email: <input type="text" name="emailBox" id="emailBox" size="25" required placeholder="Enter your email" oninput="emailValidation()"></label>
+                                <br>';
+                                echo '<div id="emailError" class="errormessage"></div>';
+                                echo '<br>';
+                                echo '<label>Name: <input type="text" name="nameBox" id="nameBox" size="25" required placeholder="Enter your name" oninput="nameValidation()"></label><br>';
+                                echo '<div id="nameError" class="errormessage"></div>';
+                                echo '</fieldset>';
+                            }
+                            ?>
+                        </div>
                         <p id="payment-header" style="display: none;">Please select payment method:</p>
                         <!-- Not displayed unless user clicks seats -->
                         <div id="payment-options" style="display: none;">
@@ -411,8 +455,8 @@ if (isset($_POST['checkoutBtn'])) {
                     </td>
                     <td style="text-align: center; vertical-align: middle; padding-left:50px;">
                         <div style="display: inline-block; text-align: left;">
-                            <input class="checkout-btn" name="checkoutBtn" type="submit" value="Check Out" id="checkout"
-                                style="display:none">
+                            <input class="checkout-btn custom-button" name="checkoutBtn" type="submit" value="CheckOut"
+                                id="checkout" style="display:none" disabled>
                         </div>
                     </td>
                 </tr>
@@ -424,6 +468,7 @@ if (isset($_POST['checkoutBtn'])) {
 
 
 <script>
+
     // Add click event listeners to seats
     var seats = document.getElementsByName("seat[]");
     for (var i = 0; i < seats.length; i++) {
@@ -435,6 +480,7 @@ if (isset($_POST['checkoutBtn'])) {
             document.getElementById("payment-header").style.display = "block";   //show the payment header
             document.getElementById("payment-options").style.display = "block";  //show the payment option
             document.getElementById("checkout").style.display = "block";   //show the checkout button
+            document.getElementById("customer-info").style.display = "block";  //show the customer info
 
         });
     }
@@ -455,7 +501,9 @@ if (isset($_POST['checkoutBtn'])) {
             document.getElementById("payment-header").style.display = "none";   //hide the payment header
             document.getElementById("payment-options").style.display = "none";  //hide the payment header
             document.getElementById("checkout").style.display = "none";  //hide the checkout button
+            document.getElementById("customer-info").style.display = "none";  //hide the customer info
         }
+
         document.getElementById("quantity").innerHTML = quantity;
         document.getElementById("total").innerHTML = "$" + quantity * 9;  //price of ticket is 9 dollars
 
@@ -478,7 +526,87 @@ if (isset($_POST['checkoutBtn'])) {
         messageElement.textContent = "";
     }
 
-</script>
+    //email validation
+    function emailValidation() {
+        const emailValue = document.getElementById("emailBox").value;
+        const emailError = document.getElementById("emailError");
 
+
+        const regexEmail = /^[a-zA-Z0-9.-]+@([a-zA-Z0-9-])+(\.[a-zA-Z]+){0,3}\.[a-zA-Z]{2,3}$/; //email format    //[a-zA-Z0-9.-]+: Matches one or more word characters, hyphens, or periods for the user name part.
+        //     // + means repeat more than once , 
+        //     //(\.[a-zA-Z]+){0,3} : Matches zero to three occurrences of a period followed by one or more word characters for the domain name part.  meaning 0 to 3 extension
+        //     //\.[a-zA-Z]{2,3} : for last extension it has to be 2-3 characters.
+
+        // Check if the input is null or empty
+        if (!emailValue) {
+            emailError.textContent = '';
+            return; // Clear error message
+        }
+
+        if (regexEmail.test(emailValue) == false) {
+            emailError.textContent = 'Invalid Email Address';
+            disableCheckoutButton(); // Disable the button
+        } else {
+            emailError.textContent = '';
+            enableCheckoutButton(); // Enable the button
+        }
+    }
+
+    //function to validate name
+    function nameValidation() {
+        const nameValue = document.getElementById("nameBox").value;
+        const nameError = document.getElementById("nameError");
+
+        const regexName = /^[a-zA-Z\s]+$/; //alphabet charaters and space 
+
+        const nameWithoutSpacesCharCount = nameValue.match(/[\w]*/g).join('').length;  //count the length of char without space  \w matches any word character
+
+        // Check if the input is null or empty
+        if (!nameValue) {
+            nameError.textContent = '';  // Clear error message
+            return;
+        }
+
+        if (regexName.test(nameValue) == false) {      //if else to check valid
+            nameError.textContent = 'Name cannot contain numbers or special characters.';
+            disableCheckoutButton();
+        } else if (nameWithoutSpacesCharCount < 3) {
+            nameError.textContent = 'Name must be at least 3 characters long';
+            disableCheckoutButton();
+
+        } else {
+            nameError.textContent = '';
+            enableCheckoutButton(); // Enable the button
+        }
+
+    }
+
+    //disable the checkoutbutton
+    function disableCheckoutButton() {
+        document.getElementById("checkout").disabled = true;
+
+    }
+
+    function enableCheckoutButton() {
+        document.getElementById("checkout").disabled = false;
+    }
+
+
+    document.getElementById("emailBox").addEventListener("input", updateCheckoutButtonState);
+    document.getElementById("nameBox").addEventListener("input", updateCheckoutButtonState);
+
+    function updateCheckoutButtonState() {
+        const emailError = document.getElementById("emailError").textContent;
+        const nameError = document.getElementById("nameError").textContent;
+
+        if (emailError || nameError) {
+            disableCheckoutButton();
+        } else {
+            enableCheckoutButton(); // Enable the button when both validations are clear
+        }
+    }
+
+
+</script>
 
 </html>

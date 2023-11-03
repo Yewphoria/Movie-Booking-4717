@@ -40,9 +40,9 @@ CREATE TABLE orders (
   `title` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
   `seat` int(5) NOT NULL,
-  `dayofweek` varchar(20) NOT NULL,
-  `timing` varchar(20) NOT NULL,
-  `nameCustomer` varchar(100) NOT NULL,
+  `date` varchar(20) NOT NULL,
+  `time` varchar(20) NOT NULL,
+  `customerName` varchar(100) NOT NULL,
   `payment` varchar(20) NOT NULL,
   PRIMARY KEY (id)
 );
