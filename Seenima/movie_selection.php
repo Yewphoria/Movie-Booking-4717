@@ -116,10 +116,10 @@ $result = $conn->query($query);
         <nav>
             <div class="left">
                 <ul>
-                    <li><a href="index.php">Menu</a></li>
+                    <li><a href="index.php">Home</a></li>
                     <li><a href="movie_selection.php">Movies</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">About Us</a></li>
+                    <li><a href="aboutus.php">About Us</a></li>
+                    <li><a href="jobs.php">Careers</a></li>
                 </ul>
             </div>
             <div class="center">
@@ -142,7 +142,7 @@ $result = $conn->query($query);
     <h2 style="text-align: center; ">Now Showing</h2>
 
     <div class="container">
-        <form method="post" action="checkout.php">
+        <form method="post" action="checkout.php" style="margin:auto;">
             <div class="row">
                 <?php
                 if (mysqli_num_rows($result) > 0) {
@@ -166,9 +166,37 @@ $result = $conn->query($query);
     </div>
 
 
-    <footer>
-        <h1 style="text-align: center;">Footer div</h1>
-    </footer>
+    <div class="footer">
+        <div class="column">
+            <!-- 1st Column - Navigation Bar -->
+            <ul id="footer-nav">
+                <li><a href="index.php">Home</a></li><br>
+                <li><a href="movie_selection.php">Movies</a></li><br>
+                <li><a href="aboutus.php">About Us</a></li><br>
+                <li><a href="jobs.php">Careers</a></li>
+            </ul>
+        </div>
+        <div class="column">
+            <!-- 2nd Column - Logo and Socials -->
+            <div class="logo">
+                <img src="images/seenima.png" alt="Logo">
+            </div>
+            <div class="social-icons" style="color: #ffffff;">
+                <i class="fab fa-facebook"></i>
+                <i class="fab fa-twitter"></i>
+                <i class="fab fa-instagram"></i>
+            </div>
+        </div>
+        <div class="column">
+            <!-- 3rd Column - Any additional content you want -->
+            <p>Contact Us:</p>
+            <address>
+                10 Bayfront Ave, L3-88,<br>
+                Singapore 018956<br><br>
+                Phone: +65 62353535<br>
+                Email: enquiry@seenima.com.sg
+            </address>
+        </div>
     </div>
 
 </body>

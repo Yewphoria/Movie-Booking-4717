@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 
 $servername = "localhost";
@@ -7,44 +6,53 @@ $username = "root";
 $password = "";
 $dbname = "seenima";
 
-
 // Create connection
 $conn = mysqli_connect($servername, $username, $password, $dbname);
-// Check connection
+
+// Check connection and handle errors
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
-$movie = $_POST['selectedmovie'];
-// var_dump($movie); for checking purpose
-$_SESSION['movie'] = $movie; //store the movie id in session variable
+// Get movie ID from the URL
+$movieId = $_GET['id'];
 
-//retrieve the movie details from database
+// Query your database to retrieve movie information based on $movieId
+// Modify this query based on your database schema
+$query = "SELECT * FROM movies WHERE id = $movieId";
+$result = mysqli_query($conn, $query);
 
-$query = "SELECT * FROM movies WHERE title='$movie'";
-$result = $conn->query($query);
-$row = $result->fetch_assoc();
-$movie_title = $row['title'];
-$movie_picture = $row['pict'];
-$movie_sypnosis = $row['sypnosis'];
-$movie_cast = $row['cast'];
-$movie_director = $row['director'];
-$movie_genre = $row['genre'];
-$movie_release = $row['release'];
-$movie_runtime = $row['runtime'];
-$movie_language = $row['language'];
-$movie_trailer = $row['trailer_url'];
+// Check if a movie with the given ID exists
+if (mysqli_num_rows($result) === 1) {
+    $row = mysqli_fetch_assoc($result);
+    // Extract movie details
+    $movieTitle = $row['title'];
+    $movieImage = $row['pict'];
+    $movieSynopsis = $row['sypnosis'];
+    $moviecast = $row['cast'];
+    $moviedirector = $row['director'];
+    $moviegenre = $row['genre'];
+    $movierelease = $row['release'];
+    $moviert = $row['runtime'];
+    $movielang = $row['language'];
+    $movietrailer = $row['trailer_url'];
+} else {
+    // Handle the case where the movie doesn't exist
+    $movieTitle = "Movie Not Found";
+    $movieImage = "placeholder.jpg";
+    $movieSynopsis = "This movie does not exist in our database.";
+}
 
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <title>Seenima</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seenima Cineplex</title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <script src="scripts/script-showtime.js"></script>
-    <meta charset="utf-8">
     <style>
         p {
             font-size: 15px;
@@ -133,38 +141,11 @@ $movie_trailer = $row['trailer_url'];
             padding: 5px;
             text-decoration: none;
         }
-
-        #showtimes-content {
-            display: flex;
-            /* Change the display property to flex */
-            flex-wrap: wrap;
-            /* Allow flex items to wrap onto multiple lines if needed */
-
-            margin: 0;
-        }
-
-        .showtime-box {
-            border: 1px solid #333;
-            margin: 0 10px 10px 0;
-            padding: 10px;
-            cursor: pointer;
-            text-align: center;
-            background-color: peachpuff;
-            max-width: 20%;
-            height: auto;
-            border-radius: 8px;
-        }
-
-        .showtime-box:hover {
-            color: peachpuff;
-            background-color: black;
-        }
     </style>
 </head>
-
+</head>
 <body>
-    <!-- header div -->
-    <header>
+<header>
         <nav>
             <div class="left">
                 <ul>
@@ -181,26 +162,26 @@ $movie_trailer = $row['trailer_url'];
             </div>
             <div class="right">
                 <?php
-                if (isset($_SESSION['valid_user'])) {
-                    echo '<h3>Hi, ' . $_SESSION['valid_user'] . ' </h3>';
-                    echo '<a href="logout.php">Logout</a>';
-                } else {
-                    echo "<a href='registration.php'><input class='btn_reg' type='button' value='Login/Sign Up'></a>";
-                }
+                    if (isset($_SESSION['valid_user'])) {
+                        echo '<a href="profile.php"><h3>Hi, <u>' . $_SESSION['valid_user'] . ' </u></h3></a>';
+                        echo '<a href="logout.php">Logout</a>';
+                    } else {
+                        echo "<a href='registration.php'><input class='btn_reg' type='button' value='Login/Sign Up'></a>";
+                    }
                 ?>
             </div>
         </nav>
     </header>
     <div>
         <h2 style="text-align: left; padding-left: 5%;">
-            <?php echo $movie_title; ?></strong>
+            <?php echo $movieTitle; ?></strong>
 
         </h2>
         <hr class="solid" style="max-width: 90%;">
-    </div>
+    </div>                
     <div class="container-movie-detail">
         <div class="col-image">
-            <img src="./images/<?php echo $movie_picture; ?>" id="movie-image">
+            <img src="./images/<?php echo $movieImage; ?>" id="movie-image">
         </div>
         <div class="col"> <!--Main right column container-->
             <div class="container">
@@ -210,7 +191,7 @@ $movie_trailer = $row['trailer_url'];
                         <span class="subtitle">Cast:</span>
                     <div class="text-container" style="overflow: hidden; padding-left:35px;">
                         <span style="text-align:left">
-                            <?php echo $movie_cast; ?>
+                            <?php echo $moviecast; ?>
                         </span>
                     </div>
                     </p>
@@ -218,7 +199,7 @@ $movie_trailer = $row['trailer_url'];
                         <span class="subtitle">Director:</span>
                     <div class="text-container" style="overflow: hidden; padding-left:14px;">
                         <span style="text-align:left">
-                            <?php echo $movie_director; ?>
+                            <?php echo $moviedirector; ?>
                         </span>
                     </div>
                     </p>
@@ -226,7 +207,7 @@ $movie_trailer = $row['trailer_url'];
                         <span class="subtitle">Genre:</span>
                     <div class="text-container" style="overflow: hidden; padding-left:25px;">
                         <span style="text-align:left">
-                            <?php echo $movie_genre; ?>
+                            <?php echo $moviegenre; ?>
                         </span>
                     </div>
                     </p>
@@ -236,7 +217,7 @@ $movie_trailer = $row['trailer_url'];
                         <span class="subtitle">Release:</span>
                     <div class="text-container" style="overflow: hidden; padding-left:45px;">
                         <span style="text-align:left">
-                            <?php echo $movie_release; ?>
+                            <?php echo $movierelease; ?>
                         </span>
                     </div>
                     </p>
@@ -244,7 +225,7 @@ $movie_trailer = $row['trailer_url'];
                         <span class="subtitle">Running Time:</span>
                     <div class="text-container" style="overflow: hidden; padding-left:8px;">
                         <span style="text-align:left">
-                            <?php echo $movie_runtime; ?>
+                            <?php echo $moviert; ?>
                         </span>
                     </div>
                     </p>
@@ -252,7 +233,7 @@ $movie_trailer = $row['trailer_url'];
                         <span class="subtitle">Language:</span>
                     <div class="text-container" style="overflow: hidden; padding-left:35px;">
                         <span style="text-align:left">
-                            <?php echo $movie_language; ?>
+                            <?php echo $movielang; ?>
                         </span>
                     </div>
                     </p>
@@ -261,43 +242,14 @@ $movie_trailer = $row['trailer_url'];
 
             <h3 style="padding-left: 1.5%;"><Strong>Synopsis</Strong></h3>
             <p style="padding-left:1.5%; text-align: justify;">
-                <?php echo $movie_sypnosis; ?>
+                <?php echo $movieSynopsis; ?>
             </p>
             <br>
             <video width="100%" height="auto" controls poster="./images/Ex-file-4-thumbnail.png">
-                <source src="./images/<?php echo $movie_trailer; ?>" type="video/mp4">
+                <source src="./images/<?php echo $movietrailer; ?>" type="video/mp4">
             </video>
         </div>
     </div>
-    <h2 style="padding-left: 5%;">Buy Tickets</h2>
-    <hr class="solid" style="max-width: 90%;">
-    <div class="cinema-container">
-        <div class="col" style="max-width: 30%;">
-            <h3 style="padding-left: 20%;">Select a date</h3>
-            <ul style="padding-left:17%;">
-                <form action="seat.php" method="post" id="booking-form">
-                    <li><a onclick="showShowtimes('05-Nov-2023', event)">05-Nov-2023</a>
-                    </li>
-                    <li><a onclick="showShowtimes('06-Nov-2023', event)">06-Nov-2023</a>
-                    </li>
-                    <li><a onclick="showShowtimes('07-Nov-2023', event)">07-Nov-2023</a>
-                    </li>
-                    <!-- Add hidden input fields for date and time -->
-                    <input type="hidden" name="date" id="selected-date" value="">
-                    <input type="hidden" name="time" id="selected-time" value="">
-                </form>
-            </ul>
-        </div>
-        <div class="col">
-            <div class="showtimes">
-                <h3>Showtimes</h3>
-                <div id="showtimes-content"></div>
-            </div>
-        </div>
-
-    </div>
-
-
 
     <div class="footer">
         <div class="column">
@@ -332,6 +284,6 @@ $movie_trailer = $row['trailer_url'];
         </div>
     </div>
 
+    <script src="scripts/script.js"></script>
 </body>
-
 </html>

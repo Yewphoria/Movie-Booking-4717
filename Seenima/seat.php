@@ -254,10 +254,10 @@ if (isset($_POST['checkoutBtn'])) {
         <nav>
             <div class="left">
                 <ul>
-                    <li><a href="#">Menu</a></li>
+                    <li><a href="index.php">Home</a></li>
                     <li><a href="movie_selection.php">Movies</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">About Us</a></li>
+                    <li><a href="aboutus.php">About Us</a></li>
+                    <li><a href="jobs.php">Careers</a></li>
                 </ul>
             </div>
             <div class="center">
@@ -463,6 +463,40 @@ if (isset($_POST['checkoutBtn'])) {
             </form>
         </div>
     </div>
+
+    <div class="footer">
+        <div class="column">
+            <!-- 1st Column - Navigation Bar -->
+            <ul id="footer-nav">
+                <li><a href="index.php">Home</a></li><br>
+                <li><a href="movie_selection.php">Movies</a></li><br>
+                <li><a href="aboutus.php">About Us</a></li><br>
+                <li><a href="jobs.php">Careers</a></li>
+            </ul>
+        </div>
+        <div class="column">
+            <!-- 2nd Column - Logo and Socials -->
+            <div class="logo">
+                <img src="images/seenima.png" alt="Logo">
+            </div>
+            <div class="social-icons" style="color: #ffffff;">
+                <i class="fab fa-facebook"></i>
+                <i class="fab fa-twitter"></i>
+                <i class="fab fa-instagram"></i>
+            </div>
+        </div>
+        <div class="column">
+            <!-- 3rd Column - Any additional content you want -->
+            <p>Contact Us:</p>
+            <address>
+                10 Bayfront Ave, L3-88,<br>
+                Singapore 018956<br><br>
+                Phone: +65 62353535<br>
+                Email: enquiry@seenima.com.sg
+            </address>
+        </div>
+    </div>
+
 </body>
 
 
