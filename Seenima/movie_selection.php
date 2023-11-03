@@ -14,23 +14,33 @@ if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
-$query = "SELECT * FROM `movies` WHERE id='1'";
-$result = $conn->query($query);
-$row = $result->fetch_assoc();
-$movie_title1 = $row['title'];
-$movie_picture1 = $row['pict'];
 
-$query = "SELECT * FROM `movies` WHERE id='2'";
+// Query the database to fetch the first three movie records for "Now Showing"
+$query = "SELECT * FROM movies WHERE id <= 3";
 $result = $conn->query($query);
-$row = $result->fetch_assoc();
-$movie_title2 = $row['title'];
-$movie_picture2 = $row['pict'];
 
-$query = "SELECT * FROM `movies` WHERE id='3'";
-$result = $conn->query($query);
-$row = $result->fetch_assoc();
-$movie_title3 = $row['title'];
-$movie_picture3 = $row['pict'];
+
+
+
+
+
+// $query = "SELECT * FROM `movies` WHERE id='1'";
+// $result = $conn->query($query);
+// $row = $result->fetch_assoc();
+// $movie_title1 = $row['title'];
+// $movie_picture1 = $row['pict'];
+
+// $query = "SELECT * FROM `movies` WHERE id='2'";
+// $result = $conn->query($query);
+// $row = $result->fetch_assoc();
+// $movie_title2 = $row['title'];
+// $movie_picture2 = $row['pict'];
+
+// $query = "SELECT * FROM `movies` WHERE id='3'";
+// $result = $conn->query($query);
+// $row = $result->fetch_assoc();
+// $movie_title3 = $row['title'];
+// $movie_picture3 = $row['pict'];
 ?>
 
 
@@ -134,44 +144,23 @@ $movie_picture3 = $row['pict'];
     <div class="container">
         <form method="post" action="checkout.php">
             <div class="row">
-                <div class="col">
-                    <button type="submit" name="selectedmovie" value="The Ex-Files 4: Marriage Plan 前任4：英年早婚"
-                        class="button-image">
-                        <img src="./images/<?php echo $movie_picture1; ?>" alt="Submit">
-                    </button> <!-- Linking to movie deatils when user clicks the image-->
-                    <p style="text-align:center">
-                        <?php echo $movie_title1; ?>
-                        <br>
-                        <br>
-                        <button type="submit" class="btn" style="text-align: center;" name="selectedmovie"
-                            value="The Ex-Files 4: Marriage Plan 前任4：英年早婚">Book Now</button>
-                    </p>
-                </div>
-                <div class="col">
-                    <button type="submit" name="selectedmovie" value="Teenage Mutant Ninja Turtles: Mutant Mayhem"
-                        class="button-image">
-                        <img src="./images/<?php echo $movie_picture2; ?>" alt="Submit">
-                    </button> <!-- Linking to movie deatils when user clicks the image-->
-                    <p style="text-align:center">
-                        <?php echo $movie_title2; ?>
-                        <br>
-                        <br>
-                        <button type="submit" class="btn" style="text-align: center;" name="selectedmovie"
-                            value="Teenage Mutant Ninja Turtles: Mutant Mayhem">Book Now</button>
-                    </p>
-                </div>
-                <div class="col">
-                    <button type="submit" name="selectedmovie" value="Saw X" class="button-image">
-                        <img src="./images/<?php echo $movie_picture3; ?>" alt="Submit">
-                    </button> <!-- Linking to movie deatils when user clicks the image-->
-                    <p style="text-align:center">
-                        <?php echo $movie_title3; ?>
-                        <br>
-                        <br>
-                        <button type="submit" class="btn" style="text-align: center;" name="selectedmovie"
-                            value="Saw X">Book Now</button>
-                    </p>
-                </div>
+                <?php
+                if (mysqli_num_rows($result) > 0) {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        echo '<div class="col">';
+                        echo '<button type="submit" name="selectedmovie" value="' . $row['title'] . '" class="button-image">';
+                        echo '<img src="images/' . $row['pict'] . '" alt="Submit">';
+                        echo '</button>';
+                        echo '<p style="text-align:center">';
+                        echo $row['title'];
+                        echo '<br>';
+                        echo '<br>';
+                        echo '<button type="submit" class="btn" style="text-align: center;" name="selectedmovie" value="' . $row['title'] . '">Book Now</button>';
+                        echo '</p>';
+                        echo '</div>';
+                    }
+                }
+                ?>
             </div>
         </form>
     </div>
