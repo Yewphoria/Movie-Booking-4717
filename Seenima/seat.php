@@ -52,11 +52,12 @@ if (isset($_POST['date'])) { //if the date is selected
 
 //When user click the checkout button which submit the form 
 if (isset($_POST['checkoutBtn'])) {
-    $date = $_SESSION['date'];
-    $time = $_SESSION['time'];
     $query = "SELECT * FROM `availability` WHERE title='$movie' AND date='$date' AND time='$time'";
     $result = $conn->query($query);
     $rowBoxes = resultToArray($result);
+    $date = $_SESSION['date'];
+    $time = $_SESSION['time'];
+    
     if (!empty($_POST['emailBox']) and !empty($_POST['nameBox'])) { //if the email and name is not empty
         $email = $_POST['emailBox'];
         $name = $_POST['nameBox'];
@@ -64,16 +65,21 @@ if (isset($_POST['checkoutBtn'])) {
         $_SESSION['email'] = $email;
         $_SESSION['name'] = $name;
         $_SESSION['payment'] = $payment;
-        
+        include 'email_confirmation.php'; #send email to user
+
         if (!empty($_POST['seat'])) { //if the seat is selected and submited through the form
-            foreach ($_POST['seat'] as $selected) { //for each selected seat which have value of the seat number which is set into $selected
+
+            $selectedSeats = $_POST['seat'];
+            $seat = implode(", ", $selectedSeats);
+            
+            foreach ($selectedSeats as $selected) { //for each selected seat which have value of the seat number which is set into $selected
                 $querySeat = "UPDATE `availability` SET bookingstatus = '1' WHERE title = '$movie' AND date = '$date' AND time = '$time' AND seatcode = '$selected'";
                 $result = $conn->query($querySeat);
                 $queryOrder = "INSERT INTO `orders` (title, email,seat,date,time,customerName, payment) VALUES ('$movie', '$email', '$selected', '$date', '$time', '$name', '$payment')";
                 $result = $conn->query($queryOrder);
             }
         }
-        include 'email_confirmation.php'; #send email to user
+        
         // code to display a confirmation dialog with only the "OK" button
         echo "<script>alert('Tickets successfully purchased! Please check your email. Thank you for your time');
     window.location.href = 'movie_selection.php';</script>";
@@ -409,10 +415,21 @@ if (isset($_POST['checkoutBtn'])) {
                         <div id="customer-info" style="display:none;">
                             <?php
                             if (isset($_SESSION['valid_user'])) {
-                                echo '<h3>Ordered by ' . $_SESSION['valid_user'] . ' </h3>';
-                                echo '<input type="hidden" name="emailBox" value="' . $_SESSION['valid_user'] . '">';
-                                echo '<input type="hidden" name="nameBox" value="customer_login">';
-
+                                // Retrieve the user's name from your database based on their email
+                                $email = $_SESSION['valid_user'];
+                                $query = "SELECT name FROM customers WHERE email = '$email'";
+                                $result = $conn->query($query);
+                                if ($result->num_rows > 0) {
+                                    $row = $result->fetch_assoc();
+                                    $name = $row['name'];
+                                } else {
+                                    // Handle the case where the user's name is not found
+                                    $name = "Unknown"; // You can set a default name
+                                }
+                            
+                                echo '<h3>Ordered by ' . $name . ' </h3>';
+                                echo '<input type="hidden" name="emailBox" value="' . $email . '">';
+                                echo '<input type="hidden" name="nameBox" value="' . $name . '">';
                             } else {
                                 echo '<fieldset style="border:0px">';
                                 echo '<label>Email: <input type="text" name="emailBox" id="emailBox" size="25" required placeholder="Enter your email" oninput="emailValidation()"></label>

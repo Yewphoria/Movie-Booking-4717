@@ -2,18 +2,16 @@
 $email = $_SESSION['email'] ;
 $name = $_SESSION['name'];
 $payment = $_SESSION['payment'];
-$time = $_SESSION['time'];
+$timing = $_SESSION['timing'];
 $date = $_SESSION['date'];
 $movie = $_SESSION['movie'];
-
-$selectedSeats = isset($_POST['seat']) ? implode(', ', $_POST['seat']) : '';
 
 $to      = 'f32ee@localhost';
 $subject = 'Order Ticket Successful!';
 $message = "
 Dear $name,
 
-Thank you for your purchase of $movie tickets for $date at $time. Your seat(s): $selectedSeats.
+Thank you for your purchase of $movie tickets for $date at $timing.
 Payment with $payment.
 We look forward to your visit.
 Enjoy your movie and have a nice day!
