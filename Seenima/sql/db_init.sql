@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS availability;
 
 
--- Initialize products table
+Initialize products table
 
 CREATE TABLE movies (
   `id` int(10) NOT NULL AUTO_INCREMENT,
@@ -21,7 +21,7 @@ CREATE TABLE movies (
   PRIMARY KEY (id)
 );
 
--- Initialize customers table
+Initialize customers table
 
 CREATE TABLE customers (
   `id` int(10) NOT NULL  AUTO_INCREMENT,
@@ -30,10 +30,11 @@ CREATE TABLE customers (
   `password` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
   `phonenumber` int(20) NOT NULL,
+  `date` varchar(50) NOT NULL,
   PRIMARY KEY (id)
 );
 
--- Initialize orders table
+Initialize orders table
 
 CREATE TABLE orders (
   `id` int(10) NOT NULL  AUTO_INCREMENT,
@@ -47,7 +48,7 @@ CREATE TABLE orders (
   PRIMARY KEY (id)
 );
 
--- Initialize customers table
+Initialize customers table
 
 CREATE TABLE availability (
   `id` int(10) NOT NULL AUTO_INCREMENT,

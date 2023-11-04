@@ -457,7 +457,7 @@ if (isset($_POST['checkoutBtn'])) {
                     <td style="text-align: center; vertical-align: middle; padding-left:50px;">
                         <div style="display: inline-block; text-align: left;">
                             <input class="checkout-btn custom-button" name="checkoutBtn" type="submit" value="CheckOut"
-                                id="checkout" style="display:none" disabled>
+                                id="checkout" style="display:none" <?php echo isset($_SESSION['valid_user']) ? '' : 'disabled'; ?>>
                         </div>
                     </td>
                 </tr>
@@ -631,19 +631,16 @@ if (isset($_POST['checkoutBtn'])) {
     document.getElementById("nameBox").addEventListener("input", updateCheckoutButtonState);
 
     function updateCheckoutButtonState() {
-        if (isset($_SESSION['valid_user'])) {
-            enableCheckoutButton();
-        }
-        else {
-            const emailError = document.getElementById("emailError").textContent;
-            const nameError = document.getElementById("nameError").textContent;
+        const validUser = <?php echo isset($_SESSION['valid_user']) ? 'true' : 'false'; ?>;
+        const emailError = document.getElementById("emailError").textContent;
+        const nameError = document.getElementById("nameError").textContent;
 
-            if (emailError || nameError) {
-                disableCheckoutButton();
-            } else {
-                enableCheckoutButton(); // Enable the button when both validations are clear
-            }
+        if (emailError || nameError) {
+            disableCheckoutButton();
+        } else {
+            enableCheckoutButton(); // Enable the button when both validations are clear
         }
+
     }
 
 
