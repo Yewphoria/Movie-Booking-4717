@@ -41,9 +41,9 @@ CREATE TABLE orders (
   `title` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
   `seat` int(5) NOT NULL,
-  `dayofweek` varchar(20) NOT NULL,
-  `timing` varchar(20) NOT NULL,
-  `nameCustomer` varchar(100) NOT NULL,
+  `date` varchar(20) NOT NULL,
+  `time` varchar(20) NOT NULL,
+  `Customername` varchar(100) NOT NULL,
   `payment` varchar(20) NOT NULL,
   PRIMARY KEY (id)
 );
@@ -53,8 +53,8 @@ Initialize customers table
 CREATE TABLE availability (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `title` varchar(50) NOT NULL,
-  `dayofweek` varchar(50) NOT NULL,
-  `timing` varchar(100) NOT NULL,
+  `date` varchar(50) NOT NULL,
+  `time` varchar(100) NOT NULL,
   `seatcode` int(6) NOT NULL,
   `bookingstatus` varchar(50) NOT NULL,
   PRIMARY KEY (id)
