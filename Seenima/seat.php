@@ -411,6 +411,7 @@ if (isset($_POST['checkoutBtn'])) {
                                 echo '<h3>Ordered by ' . $_SESSION['valid_user'] . ' </h3>';
                                 echo '<input type="hidden" name="emailBox" value="' . $_SESSION['valid_user'] . '">';
                                 echo '<input type="hidden" name="nameBox" value="customer_login">';
+
                             } else {
                                 echo '<fieldset style="border:0px">';
                                 echo '<label>Email: <input type="text" name="emailBox" id="emailBox" size="25" required placeholder="Enter your email" oninput="emailValidation()"></label>
@@ -596,13 +597,18 @@ if (isset($_POST['checkoutBtn'])) {
     document.getElementById("nameBox").addEventListener("input", updateCheckoutButtonState);
 
     function updateCheckoutButtonState() {
-        const emailError = document.getElementById("emailError").textContent;
-        const nameError = document.getElementById("nameError").textContent;
+        if (isset($_SESSION['valid_user'])) {
+            enableCheckoutButton();
+        }
+        else {
+            const emailError = document.getElementById("emailError").textContent;
+            const nameError = document.getElementById("nameError").textContent;
 
-        if (emailError || nameError) {
-            disableCheckoutButton();
-        } else {
-            enableCheckoutButton(); // Enable the button when both validations are clear
+            if (emailError || nameError) {
+                disableCheckoutButton();
+            } else {
+                enableCheckoutButton(); // Enable the button when both validations are clear
+            }
         }
     }
 
