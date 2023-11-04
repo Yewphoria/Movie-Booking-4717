@@ -130,7 +130,7 @@ $result = $conn->query($query);
             <div class="right">
                 <?php
                 if (isset($_SESSION['valid_user'])) {
-                    echo '<h3>Hi, ' . $_SESSION['valid_user'] . ' </h3>';
+                    echo '<a href="profile.php"><h3>Hi, <u>' . $_SESSION['valid_user'] . ' </u></h3></a>';
                     echo '<a href="logout.php">Logout</a>';
                 } else {
                     echo "<a href='registration.php'><input class='btn_reg' type='button' value='Login/Sign Up'></a>";

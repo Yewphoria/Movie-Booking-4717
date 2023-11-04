@@ -64,49 +64,18 @@ nav a {
 }
 
 .carousel-container {
-  display: flex;
-  align-items: center;
-  position: relative;
-  text-align: center;
-  width: 100%; /* Ensure the container takes the full width */
+  width: 100%;
+  height: 300px;
   overflow: hidden;
-  max-width: 100%; /* Ensure the container's max width is the full width */
+  position: relative;
 }
 
 .carousel-slide {
-  flex: 0 0 100%;
-  display: none;
-  text-align: center; /* Center the image */
-}
-
-.carousel-slide img {
-  display: block;
-  max-width: 100%; /* Ensure the image fits within the container */
-  height: auto;
-  margin: 0 auto; /* Center the image horizontally */
-}
-
-/* Style for the previous and next buttons */
-.carousel-button {
-  cursor: pointer;
-  position: absolute;
-  top: 50%;
-  font-size: 24px;
-  background: rgba(255, 255, 255, 0.5);
-  padding: 5px 15px;
-  border: none;
-  border-radius: 5px;
-  z-index: 2; /* Ensure the buttons are above the images */
-}
-
-#carousel-prev {
-  left: 10px; /* Adjust the distance from the left */
-  transform: translateY(-50%);
-}
-
-#carousel-next {
-  right: 10px; /* Adjust the distance from the right */
-  transform: translateY(-50%);
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.5s ease;
 }
 /* Style your tabs and content areas */
 

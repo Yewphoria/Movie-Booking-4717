@@ -36,4 +36,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     echo '<meta http-equiv="refresh" content="0;URL=/seenima/aboutus.php" />';
 }
 ?>
-?>

@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
   let slideIndex = 0;
   const slides = document.querySelectorAll('.carousel-slide');
   showSlide(slideIndex);
+  let autoAdvanceTimeout;
 
   function changeSlide(n) {
     showSlide(slideIndex += n);
@@ -32,25 +33,23 @@ document.addEventListener('DOMContentLoaded', function () {
     resetAutoAdvance();
   }
 
-  // Add event listeners for mouseover and mouseout on the image
-  document.getElementById('carousel-prev').addEventListener('mouseover', pauseAutoAdvance);
-  document.getElementById('carousel-next').addEventListener('mouseover', pauseAutoAdvance);
-  document.getElementById('carousel-prev').addEventListener('mouseout', resumeAutoAdvance);
-  document.getElementById('carousel-next').addEventListener('mouseout', resumeAutoAdvance);
+  // Add event listeners to each image for mouseover and mouseout
+  slides.forEach(function (slide, index) {
+    slide.addEventListener('mouseover', function() {
+      clearTimeout(autoAdvanceTimeout); // Pause auto-advance on mouseover
+    });
 
-  function pauseAutoAdvance() {
-    clearTimeout(autoAdvanceTimeout);
-  }
-
-  function resumeAutoAdvance() {
-    autoAdvanceTimeout = setTimeout(autoAdvance, 3000);
-  }
+    slide.addEventListener('mouseout', function() {
+      resetAutoAdvance(); // Resume auto-advance on mouseout
+    });
+  });
 
   showSlide(slideIndex);
   autoAdvance();
-  
+
   // Rest of your JavaScript code...
 });
+
 
 // Function to toggle the tab content
 function showMovies(tabName) {

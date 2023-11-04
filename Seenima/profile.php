@@ -38,6 +38,19 @@ if (isset($_SESSION['valid_user'])) {
     // You can add a redirect to your login page here.
 }
 
+$bookingHistory = array(); // Initialize an array to store booking history
+$sql = "SELECT title, seat, date, time, payment FROM orders WHERE email = '$email'";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $bookingHistory[] = $row; // Store each booking record in the array
+    }
+} else {
+    echo "No booking history found.";
+}
+
+
 // Close the database connection
 $conn->close();
 ?>
@@ -108,6 +121,28 @@ $conn->close();
 
     <a href="logout.php"><input type="submit" value="Logout" name="logout"></input></a> <!-- Link to logout page -->
    </div>
+
+   <div>
+    <h2>Booking History</h2>
+    <?php
+    if (!empty($bookingHistory)) {
+        echo '<table border="1">';
+        echo '<tr><th>Title</th><th>Seat</th><th>Date</th><th>Time</th><th>Payment</th></tr>';
+        foreach ($bookingHistory as $booking) {
+            echo '<tr>';
+            echo '<td>' . $booking['title'] . '</td>';
+            echo '<td>' . $booking['seat'] . '</td>';
+            echo '<td>' . $booking['date'] . '</td>';
+            echo '<td>' . $booking['time'] . '</td>';
+            echo '<td>' . $booking['payment'] . '</td>';
+            echo '</tr>';
+        }
+        echo '</table>';
+    } else {
+        echo "No booking history found.";
+    }
+    ?>
+</div>
 
 
     <div class="footer">

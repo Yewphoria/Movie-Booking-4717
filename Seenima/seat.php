@@ -64,7 +64,7 @@ if (isset($_POST['checkoutBtn'])) {
         $_SESSION['email'] = $email;
         $_SESSION['name'] = $name;
         $_SESSION['payment'] = $payment;
-        include 'send_email.php'; #send email to user
+        
         if (!empty($_POST['seat'])) { //if the seat is selected and submited through the form
             foreach ($_POST['seat'] as $selected) { //for each selected seat which have value of the seat number which is set into $selected
                 $querySeat = "UPDATE `availability` SET bookingstatus = '1' WHERE title = '$movie' AND date = '$date' AND time = '$time' AND seatcode = '$selected'";
@@ -73,6 +73,7 @@ if (isset($_POST['checkoutBtn'])) {
                 $result = $conn->query($queryOrder);
             }
         }
+        include 'email_confirmation.php'; #send email to user
         // code to display a confirmation dialog with only the "OK" button
         echo "<script>alert('Tickets successfully purchased! Please check your email. Thank you for your time');
     window.location.href = 'movie_selection.php';</script>";

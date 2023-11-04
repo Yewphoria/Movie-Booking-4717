@@ -27,14 +27,16 @@ SET time_zone = "+00:00";
 -- Table structure for table `availability`
 --
 
-CREATE TABLE `availability` (
-  `id` int(10) NOT NULL,
+CREATE TABLE availability (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `title` varchar(50) NOT NULL,
-  `dayofweek` varchar(50) NOT NULL,
-  `timing` varchar(100) NOT NULL,
+  `date` varchar(50) NOT NULL,
+  `time` varchar(100) NOT NULL,
   `seatcode` int(6) NOT NULL,
-  `bookingstatus` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `bookingstatus` varchar(50) NOT NULL,
+  PRIMARY KEY (id)
+);
+ ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -48,7 +50,8 @@ CREATE TABLE `customers` (
   `salutation` varchar(10) NOT NULL,
   `password` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `phonenumber` int(20) NOT NULL
+  `phonenumber` int(20) NOT NULL,
+  `date` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -89,16 +92,17 @@ INSERT INTO `movies` (`id`, `title`, `pict`, `sypnosis`, `cast`, `director`, `ge
 -- Table structure for table `orders`
 --
 
-CREATE TABLE `orders` (
-  `id` int(10) NOT NULL,
+CREATE TABLE orders (
+  `id` int(10) NOT NULL  AUTO_INCREMENT,
   `title` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
   `seat` int(5) NOT NULL,
-  `dayofweek` varchar(20) NOT NULL,
-  `timing` varchar(20) NOT NULL,
-  `nameCustomer` varchar(100) NOT NULL,
-  `payment` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `date` varchar(20) NOT NULL,
+  `time` varchar(20) NOT NULL,
+  `Customername` varchar(100) NOT NULL,
+  `payment` varchar(20) NOT NULL,
+  PRIMARY KEY (id)
+); ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Indexes for dumped tables
