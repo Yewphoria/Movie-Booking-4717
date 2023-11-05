@@ -57,7 +57,8 @@ if (isset($_POST['checkoutBtn'])) {
     $rowBoxes = resultToArray($result);
     $date = $_SESSION['date'];
     $time = $_SESSION['time'];
-    
+
+
     if (!empty($_POST['emailBox']) and !empty($_POST['nameBox'])) { //if the email and name is not empty
         $email = $_POST['emailBox'];
         $name = $_POST['nameBox'];
@@ -65,21 +66,25 @@ if (isset($_POST['checkoutBtn'])) {
         $_SESSION['email'] = $email;
         $_SESSION['name'] = $name;
         $_SESSION['payment'] = $payment;
-        include 'email_confirmation.php'; #send email to user
 
         if (!empty($_POST['seat'])) { //if the seat is selected and submited through the form
+            $selected = $_POST['seat']; // Assuming this is an array of selected seats
 
-            $selectedSeats = $_POST['seat'];
-            $seat = implode(", ", $selectedSeats);
-            
+            if (!isset($_SESSION['selected_seats'])) {
+                $_SESSION['selected_seats'] = array(); // Initialize an empty array to store selected seats
+            }
+            $_SESSION['selected_seats'] = array_merge($_SESSION['selected_seats'], $selected);
+
             foreach ($selectedSeats as $selected) { //for each selected seat which have value of the seat number which is set into $selected
+                $_SESSION['seat'] = $selected;
                 $querySeat = "UPDATE `availability` SET bookingstatus = '1' WHERE title = '$movie' AND date = '$date' AND time = '$time' AND seatcode = '$selected'";
                 $result = $conn->query($querySeat);
                 $queryOrder = "INSERT INTO `orders` (title, email,seat,date,time,customerName, payment) VALUES ('$movie', '$email', '$selected', '$date', '$time', '$name', '$payment')";
                 $result = $conn->query($queryOrder);
             }
         }
-        
+        include 'email_confirmation.php'; #send email to user
+
         // code to display a confirmation dialog with only the "OK" button
         echo "<script>alert('Tickets successfully purchased! Please check your email. Thank you for your time');
     window.location.href = 'movie_selection.php';</script>";
@@ -426,7 +431,7 @@ if (isset($_POST['checkoutBtn'])) {
                                     // Handle the case where the user's name is not found
                                     $name = "Unknown"; // You can set a default name
                                 }
-                            
+
                                 echo '<h3>Ordered by ' . $name . ' </h3>';
                                 echo '<input type="hidden" name="emailBox" value="' . $email . '">';
                                 echo '<input type="hidden" name="nameBox" value="' . $name . '">';
