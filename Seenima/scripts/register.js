@@ -28,7 +28,7 @@ function emailsValidation() {
     const emailError= document.getElementById("emailError");
 
 
-    const regexEmail=/^[a-zA-Z0-9.-]+@([a-zA-Z0-9-])+(\.[a-zA-Z]+){0,3}\.[a-zA-Z]{2,3}$/; //email format    //[a-zA-Z0-9.-]+: Matches one or more word characters, hyphens, or periods for the user name part.
+    const regexEmail=/^[a-zA-Z0-9.-]+@([a-zA-Z0-9-])+(\.[a-zA-Z]+){0,2}\.[a-zA-Z]{2,3}$/; //email format    //[a-zA-Z0-9.-]+: Matches one or more word characters, hyphens, or periods for the user name part.
 //     // + means repeat more than once , 
 //     //(\.[a-zA-Z]+){0,3} : Matches zero to three occurrences of a period followed by one or more word characters for the domain name part.  meaning 0 to 3 extension
 //     //\.[a-zA-Z]{2,3} : for last extension it has to be 2-3 characters.

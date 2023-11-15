@@ -18,6 +18,7 @@ $salutation = $_POST['salutation'];
 $phonenumber = $_POST['phonenumber'];
 $date = $_POST['date'];
 
+$password = md5($password);
 
 $sql = "INSERT INTO `customers` (`name`, salutation, email, `password`, phonenumber, `date`)
 		VALUES ('$name', '$salutation', '$email', '$password', '$phonenumber', '$date')";

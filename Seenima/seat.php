@@ -52,13 +52,11 @@ if (isset($_POST['date'])) { //if the date is selected
 
 //When user click the checkout button which submit the form 
 if (isset($_POST['checkoutBtn'])) {
+    $date = $_SESSION['date'];
+    $time = $_SESSION['time'];
     $query = "SELECT * FROM `availability` WHERE title='$movie' AND date='$date' AND time='$time'";
     $result = $conn->query($query);
     $rowBoxes = resultToArray($result);
-    $date = $_SESSION['date'];
-    $time = $_SESSION['time'];
-
-
     if (!empty($_POST['emailBox']) and !empty($_POST['nameBox'])) { //if the email and name is not empty
         $email = $_POST['emailBox'];
         $name = $_POST['nameBox'];
@@ -67,6 +65,7 @@ if (isset($_POST['checkoutBtn'])) {
         $_SESSION['name'] = $name;
         $_SESSION['payment'] = $payment;
 
+        
         if (!empty($_POST['seat'])) { //if the seat is selected and submited through the form
             $selected = $_POST['seat']; // Assuming this is an array of selected seats
 
@@ -74,17 +73,18 @@ if (isset($_POST['checkoutBtn'])) {
                 $_SESSION['selected_seats'] = array(); // Initialize an empty array to store selected seats
             }
             $_SESSION['selected_seats'] = array_merge($_SESSION['selected_seats'], $selected);
-
-            foreach ($selectedSeats as $selected) { //for each selected seat which have value of the seat number which is set into $selected
-                $_SESSION['seat'] = $selected;
+        
+        if (!empty($_POST['seat'])) { //if the seat is selected and submited through the form
+            foreach ($_POST['seat'] as $selected) { //for each selected seat which have value of the seat number which is set into $selected
                 $querySeat = "UPDATE `availability` SET bookingstatus = '1' WHERE title = '$movie' AND date = '$date' AND time = '$time' AND seatcode = '$selected'";
                 $result = $conn->query($querySeat);
                 $queryOrder = "INSERT INTO `orders` (title, email,seat,date,time,customerName, payment) VALUES ('$movie', '$email', '$selected', '$date', '$time', '$name', '$payment')";
                 $result = $conn->query($queryOrder);
             }
         }
-        include 'email_confirmation.php'; #send email to user
+    }
 
+        include 'email_confirmation.php'; #send email to user
         // code to display a confirmation dialog with only the "OK" button
         echo "<script>alert('Tickets successfully purchased! Please check your email. Thank you for your time');
     window.location.href = 'movie_selection.php';</script>";
@@ -269,7 +269,7 @@ if (isset($_POST['checkoutBtn'])) {
                     <li><a href="index.php">Home</a></li>
                     <li><a href="movie_selection.php">Movies</a></li>
                     <li><a href="aboutus.php">About Us</a></li>
-                    <li><a href="jobs.php">Careers</a></li>
+                    <li><a href="job.php">career</a></li>
                 </ul>
             </div>
             <div class="center">
@@ -281,7 +281,7 @@ if (isset($_POST['checkoutBtn'])) {
                 <?php
                 if (isset($_SESSION['valid_user'])) {
                     echo '<h3>Hi, ' . $_SESSION['valid_user'] . ' </h3>';
-                    echo '<a href="logout.php">Logout</a>';
+                    echo '<a href="logout.php">Logout</a>'  ;
                 } else {
                     echo "<a href='registration.php'><input class='btn_reg' type='button' value='Login/Sign Up'></a>";
                 }
@@ -420,21 +420,10 @@ if (isset($_POST['checkoutBtn'])) {
                         <div id="customer-info" style="display:none;">
                             <?php
                             if (isset($_SESSION['valid_user'])) {
-                                // Retrieve the user's name from your database based on their email
-                                $email = $_SESSION['valid_user'];
-                                $query = "SELECT name FROM customers WHERE email = '$email'";
-                                $result = $conn->query($query);
-                                if ($result->num_rows > 0) {
-                                    $row = $result->fetch_assoc();
-                                    $name = $row['name'];
-                                } else {
-                                    // Handle the case where the user's name is not found
-                                    $name = "Unknown"; // You can set a default name
-                                }
+                                echo '<h3>Ordered by ' . $_SESSION['valid_user'] . ' </h3>';
+                                echo '<input type="hidden" name="emailBox" value="' . $_SESSION['valid_user'] . '">';
+                                echo '<input type="hidden" name="nameBox" value="customer_login">';
 
-                                echo '<h3>Ordered by ' . $name . ' </h3>';
-                                echo '<input type="hidden" name="emailBox" value="' . $email . '">';
-                                echo '<input type="hidden" name="nameBox" value="' . $name . '">';
                             } else {
                                 echo '<fieldset style="border:0px">';
                                 echo '<label>Email: <input type="text" name="emailBox" id="emailBox" size="25" required placeholder="Enter your email" oninput="emailValidation()"></label>
@@ -480,47 +469,13 @@ if (isset($_POST['checkoutBtn'])) {
                     <td style="text-align: center; vertical-align: middle; padding-left:50px;">
                         <div style="display: inline-block; text-align: left;">
                             <input class="checkout-btn custom-button" name="checkoutBtn" type="submit" value="CheckOut"
-                                id="checkout" style="display:none" <?php echo isset($_SESSION['valid_user']) ? '' : 'disabled'; ?>>
+                            id="checkout" style="display:none" <?php echo isset($_SESSION['valid_user']) ? '' : 'disabled'; ?>>
                         </div>
                     </td>
                 </tr>
             </form>
         </div>
     </div>
-
-    <div class="footer">
-        <div class="column">
-            <!-- 1st Column - Navigation Bar -->
-            <ul id="footer-nav">
-                <li><a href="index.php">Home</a></li><br>
-                <li><a href="movie_selection.php">Movies</a></li><br>
-                <li><a href="aboutus.php">About Us</a></li><br>
-                <li><a href="jobs.php">Careers</a></li>
-            </ul>
-        </div>
-        <div class="column">
-            <!-- 2nd Column - Logo and Socials -->
-            <div class="logo">
-                <img src="images/seenima.png" alt="Logo">
-            </div>
-            <div class="social-icons" style="color: #ffffff;">
-                <i class="fab fa-facebook"></i>
-                <i class="fab fa-twitter"></i>
-                <i class="fab fa-instagram"></i>
-            </div>
-        </div>
-        <div class="column">
-            <!-- 3rd Column - Any additional content you want -->
-            <p>Contact Us:</p>
-            <address>
-                10 Bayfront Ave, L3-88,<br>
-                Singapore 018956<br><br>
-                Phone: +65 62353535<br>
-                Email: enquiry@seenima.com.sg
-            </address>
-        </div>
-    </div>
-
 </body>
 
 
@@ -590,7 +545,7 @@ if (isset($_POST['checkoutBtn'])) {
         const emailError = document.getElementById("emailError");
 
 
-        const regexEmail = /^[a-zA-Z0-9.-]+@([a-zA-Z0-9-])+(\.[a-zA-Z]+){0,3}\.[a-zA-Z]{2,3}$/; //email format    //[a-zA-Z0-9.-]+: Matches one or more word characters, hyphens, or periods for the user name part.
+        const regexEmail = /^[a-zA-Z0-9.-]+@([a-zA-Z0-9-])+(\.[a-zA-Z]+){0,2}\.[a-zA-Z]{2,3}$/; //email format    //[a-zA-Z0-9.-]+: Matches one or more word characters, hyphens, or periods for the user name part.
         //     // + means repeat more than once , 
         //     //(\.[a-zA-Z]+){0,3} : Matches zero to three occurrences of a period followed by one or more word characters for the domain name part.  meaning 0 to 3 extension
         //     //\.[a-zA-Z]{2,3} : for last extension it has to be 2-3 characters.
@@ -654,16 +609,19 @@ if (isset($_POST['checkoutBtn'])) {
     document.getElementById("nameBox").addEventListener("input", updateCheckoutButtonState);
 
     function updateCheckoutButtonState() {
-        const validUser = <?php echo isset($_SESSION['valid_user']) ? 'true' : 'false'; ?>;
-        const emailError = document.getElementById("emailError").textContent;
-        const nameError = document.getElementById("nameError").textContent;
-
-        if (emailError || nameError) {
-            disableCheckoutButton();
-        } else {
-            enableCheckoutButton(); // Enable the button when both validations are clear
+        if (isset($_SESSION['valid_user'])) {
+            enableCheckoutButton();
         }
+        else {
+            const emailError = document.getElementById("emailError").textContent;
+            const nameError = document.getElementById("nameError").textContent;
 
+            if (emailError || nameError) {
+                disableCheckoutButton();
+            } else {
+                enableCheckoutButton(); // Enable the button when both validations are clear
+            }
+        }
     }
 
 

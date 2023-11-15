@@ -17,6 +17,8 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
     //user tried to log in
     $email = $_POST['email'];
     $password = $_POST['password'];
+
+    $password = md5($password);
     $query = "SELECT * from customers where email='$email' and password = '$password'";
 
     $result = $conn->query($query);
